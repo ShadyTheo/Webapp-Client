@@ -1,0 +1,29 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Handle file uploads directory
+RewriteRule ^uploads/(.*)$ uploads/$1 [L]
+
+# API routes
+RewriteRule ^auth/(.*)$ auth.php?action=$1 [QSA,L]
+RewriteRule ^users/?$ users.php [QSA,L]
+RewriteRule ^libraries/?$ libraries.php [QSA,L]
+RewriteRule ^media/?$ media.php [QSA,L]
+RewriteRule ^media/topics/?$ media.php?action=topics [QSA,L]
+RewriteRule ^download/?$ download.php [QSA,L]
+
+# Security headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+
+# Prevent access to sensitive files
+<Files ~ "^\.">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files ~ "\.(json|log)$">
+    Order allow,deny
+    Deny from all
+</Files>
